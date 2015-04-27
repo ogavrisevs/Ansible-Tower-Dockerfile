@@ -7,7 +7,7 @@
 FROM centos:6
 
 # File Author / Maintainer
-MAINTAINER Oskars Gavriševs
+MAINTAINER Oskars Gavriševs <oskars.gavrisevs [.:ats:.] google mail.com >
 
 
 ################## BEGIN INSTALLATION ######################
@@ -43,18 +43,26 @@ ADD tower_setup_conf.yml tower_setup_conf.yml
 ADD inventory inventory
 
 # first we will run only part of installation - > we will instal Django and releated packages
-RUN ansible-playbook site.yml --inventory-file=inventory --extra-vars=tower_setup_conf.yml --skip-tags="migrations,postgresql,redis,awx,supervisor,httpd,iptables,misc"
+RUN ansible-playbook site.yml \
+      --inventory-file=inventory \
+      --skip-tags="migrations,postgresql,redis,awx,supervisor,httpd,iptables,misc"
 
 # We will disble logging on Django framework level
 # this is neede because awx-manage (tower) uses syslog and syslog is not started
 RUN sed -i "s/LOGGING_CONFIG = 'django.utils.log.dictConfig'/LOGGING_CONFIG = None/" /usr/lib64/python2.6/site-packages/django/conf/global_settings.py
 
-RUN cat /usr/lib64/python2.6/site-packages/django/conf/global_settings.py
+RUN cat /srv/ansible-tower-setup-$version/tower_setup_conf.yml
 
 # We will process with full tower installation
-RUN ansible-playbook site.yml --inventory-file=inventory --extra-vars=tower_setup_conf.yml --skip-tags="iptables"
+RUN ansible-playbook site.yml \
+      --inventory-file=inventory \
+      -e @tower_setup_conf.yml \
+      --skip-tags="iptables"
 
 ##################### INSTALLATION END #####################
-
 # Expose the default port
-EXPOSE 8080 80 443
+EXPOSE 8080
+
+CMD /etc/init.d/ansible-tower start && \
+  tail -f /dev/null
+
