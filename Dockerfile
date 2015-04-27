@@ -61,7 +61,7 @@ RUN ansible-playbook site.yml \
 
 ##################### INSTALLATION END #####################
 # Expose the default port
-EXPOSE 8080
+EXPOSE 80 443
 
 CMD /etc/init.d/ansible-tower start && \
   tail -f /dev/null
