@@ -1,4 +1,3 @@
-admin_password: password
 database: internal
 admin_password: password
 munin_password: password
