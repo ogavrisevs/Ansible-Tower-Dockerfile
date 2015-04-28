@@ -1,6 +1,6 @@
 This container consists of Ansible Tower installation.
 
-![](pic/ansible_tower_logo.png "Ansible Tower")
+![](https://raw.githubusercontent.com/ogavrisevs/Ansible-Tower-Dockerfile/master/pic/ansible_tower_logo.png "Ansible Tower")
 
 Cureentl we support following tags :
 
