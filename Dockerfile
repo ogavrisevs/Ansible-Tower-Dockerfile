@@ -9,7 +9,6 @@ FROM centos:6
 # File Author / Maintainer
 MAINTAINER Oskars Gavriševs <oskars.gavrisevs [.:ats:.] google mail.com >
 
-
 ################## BEGIN INSTALLATION ######################
 # Install Ansible Tower Following the Instructions at Anible Tower site
 # Ref: http://releases.ansible.com/ansible-tower/docs/tower_user_guide-latest.pdf
@@ -23,7 +22,7 @@ RUN yum install -y epel-release \
      openssh-clients \
      sudo
 
-# remove tty from sudoers
+# Remove tty from sudoers
 RUN sed -i '/Defaults    requiretty/d' /etc/sudoers
 
 # Tower version we will install
@@ -36,10 +35,10 @@ RUN curl -o ansible-tower-setup-$version.tar.gz http://releases.ansible.com/ansi
 
 WORKDIR /srv/ansible-tower-setup-$version
 
-#provide tower config (password) file
+# Provide tower config (password) file
 ADD tower_setup_conf.yml tower_setup_conf.yml
 
-# provide inventory file for tower installation
+# Provide inventory file for tower installation
 ADD inventory inventory
 
 # first we will run only part of installation - > we will instal Django and releated packages
